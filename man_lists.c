@@ -12,26 +12,6 @@
 
 #include "lem_in.h"
 
-void			count_capacity(t_anthill **que)
-{
-	t_anthill	*q;
-	int			i;
-	int			total;
-
-	if (!que || !*que)
-		return ;
-	q = *que;
-	total = 0;
-	i = 1;
-	while (q != NULL)
-	{
-		total = total + q->length;
-		q->capacity = (q->length * i) - total;
-		q = q->next;
-		i++;
-	}
-}
-
 void			count_dist(t_anthill **q_head)
 {
 	int			k;

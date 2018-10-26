@@ -14,20 +14,22 @@
 
 int				verify_input(t_anthill *room, t_input *input)
 {
-	if (input->error != 0)
-		return (0);
 	if (!find_start(room, input) ||\
 	!find_end(room, input))
 	{
-		input->error = 24;
+		if (input->error == 0)
+			input->error = 24;
 		return (0);
 	}
-	if (input->start == -1 || input->end == -1)
+	if (input->start == -1 || input->end == -1 || input->ant_nr <= 0)
 	{
-		if (input->start == -1)
-			input->error = 6;
-		else if (input->end == -1)
-			input->error = 7;
+		if (input->error == 0)
+		{
+			if (input->start == -1)
+				input->error = 6;
+			else if (input->end == -1)
+				input->error = 7;
+		}
 		return (0);
 	}
 	return (1);
@@ -35,11 +37,11 @@ int				verify_input(t_anthill *room, t_input *input)
 
 void			ft_check_line2(t_input *input, char **line, t_anthill **room)
 {
-	if (ft_is_start(*line, input))
+	if (ft_is_start(*line, input) && input->end != 1)
 		input->start = 1;
 	else if (is_room(*line, input))
 	{
-		if (!(check_if_room_exists(room, *line, input)))
+		if (!(check_if_r_exists(room, *line, input)))
 			add_room_to_list(room, *line, input);
 	}
 	else if (is_link(*line, input))
@@ -47,6 +49,10 @@ void			ft_check_line2(t_input *input, char **line, t_anthill **room)
 		if (is_valid_link(*line, input, room))
 			add_link_to_list(room, *line, input);
 	}
+	else if (ft_is_end(*line, input))
+		input->error = 26;
+	else if (ft_is_start(*line, input))
+		input->error = 26;
 	else
 	{
 		input->brk = 1;
@@ -57,27 +63,21 @@ void			ft_check_line2(t_input *input, char **line, t_anthill **room)
 void			ft_check_line(t_input *input, char **line, t_anthill **room)
 {
 	if (!line || !*line)
-		input->error = 17;
+		input->error = (input->error == 0) ? 17 : input->error;
 	else if (input->ant_nr == -1 && !is_comment(*line) &&\
 	!is_first_line(*line, input))
-		input->error = 20;
+		input->error = (input->error == 0) ? 20 : input->error;
 	else if (empty_line(*line))
 	{
 		input->brk = 1;
 		return ;
 	}
 	else if (is_comment(*line))
-	{
 		return ;
-	}
 	else if (is_first_line(*line, input))
-	{
 		input->ant_nr = ft_atoi(*line);
-	}
-	else if (ft_is_end(*line, input))
-	{
+	else if (ft_is_end(*line, input) && input->start != 1)
 		input->end = 1;
-	}
 	else
 		ft_check_line2(input, line, room);
 }

@@ -41,7 +41,8 @@ t_anthill			*search_room(t_anthill **head, char *name1, t_input *input)
 			return (search);
 		search = search->next;
 	}
-	input->error = 5;
+	if (input->error == 0)
+		input->error = 5;
 	return (NULL);
 }
 

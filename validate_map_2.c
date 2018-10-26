@@ -17,7 +17,7 @@ int					ft_is_start(char *line, t_input *input)
 	if (ft_strequ("##start", line))
 	{
 		if (input->start != -1)
-			input->error = 9;
+			input->error = (input->error == 0) ? 9 : input->error;
 		return (1);
 	}
 	return (0);
@@ -29,7 +29,7 @@ int					ft_is_end(char *line, t_input *input)
 	{
 		if (input->end != -1)
 		{
-			input->error = 10;
+			input->error = (input->error == 0) ? 10 : input->error;
 		}
 		return (1);
 	}
@@ -45,7 +45,7 @@ t_anthill			*find_start(t_anthill *room, t_input *input)
 		tmp = tmp->next;
 	if (!tmp)
 	{
-		input->error = 6;
+		input->error = (input->error == 0) ? 6 : input->error;
 		return (NULL);
 	}
 	if (tmp->is_start == 1)
@@ -64,7 +64,7 @@ t_anthill			*find_end(t_anthill *room, t_input *input)
 		tmp = tmp->next;
 	if (!tmp)
 	{
-		input->error = 7;
+		input->error = (input->error == 0) ? 7 : input->error;
 		return (NULL);
 	}
 	return (tmp);

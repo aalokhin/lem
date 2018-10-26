@@ -12,14 +12,6 @@
 
 #include "lem_in.h"
 
-void			print_s(t_input *input)
-{
-	ft_printf("error number: %d\n", input->error);
-	ft_printf("Ants number: %d\n", input->ant_nr);
-	ft_printf("starting here: %d\n", input->start);
-	ft_printf("ending here: %d\n", input->end);
-}
-
 void			fill_input(t_input *input)
 {
 	input->read = -1;
@@ -36,16 +28,15 @@ void			launch_algorithm(t_anthill **room, t_input *input)
 	t_anthill	*que;
 
 	que = NULL;
-	//print_check(*room);
-	if (input->error || verify_input(*room, input) == 0)
+	if (verify_input(*room, input) == 0)
 		error_message(input);
 	else
 	{
 		que = create_queue(&(*room), input);
 		if (!que)
-			input->error = 18;
-		if (input->error != 0)
 		{
+			if (input->error == 0)
+				input->error = 18;
 			error_message(input);
 			return ;
 		}
@@ -55,7 +46,6 @@ void			launch_algorithm(t_anthill **room, t_input *input)
 		else
 			output_function(que, input);
 	}
-	ft_printf("I am here welcome ept");
 	delete_all_que(&que);
 }
 
@@ -80,6 +70,5 @@ int				main(void)
 	launch_algorithm(&room, &input);
 	delete_rooms_list(&room);
 	delete_lines_list(&input.lines);
-	//system("leaks lem-in");
 	return (0);
 }

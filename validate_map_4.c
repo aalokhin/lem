@@ -18,12 +18,12 @@ int				is_first_line(char *line, t_input *input)
 		return (1);
 	else if (is_all_digits(line) && input->ant_nr == -1 && ft_atoi(line) <= 0)
 	{
-		input->error = 8;
+		input->error = (input->error == 0) ? 8 : input->error;
 		return (1);
 	}
 	else if (is_all_digits(line) && input->ant_nr != -1)
 	{
-		input->error = 2;
+		input->error = (input->error == 0) ? 2 : input->error;
 		return (0);
 	}
 	else
@@ -40,7 +40,7 @@ void			ft_clean_parse(char **parse)
 	free(parse);
 }
 
-int				check_if_room_exists(t_anthill **r, char *line, t_input *input)
+int				check_if_r_exists(t_anthill **r, char *line, t_input *input)
 {
 	char		**parse;
 	int			i;
@@ -53,13 +53,13 @@ int				check_if_room_exists(t_anthill **r, char *line, t_input *input)
 	{
 		if (ft_strequ(q->name, parse[0]))
 		{
-			input->error = 11;
+			input->error = (input->error == 0) ? 11 : input->error;
 			break ;
 		}
 		else if (ft_atoi(parse[1]) == q->x &&\
 		ft_atoi(parse[2]) == q->y)
 		{
-			input->error = 12;
+			input->error = (input->error == 0) ? 12 : input->error;
 			break ;
 		}
 		q = q->next;

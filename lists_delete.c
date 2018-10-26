@@ -55,3 +55,31 @@ void			delete_lines_list(t_lines **head)
 		(*head) = next;
 	}
 }
+
+void			delete_unneeded(t_anthill **head)
+{
+	t_anthill	*prev;
+	t_anthill	*tmp;
+
+	tmp = *head;
+	prev = tmp;
+	while (tmp != NULL && tmp->del == 1)
+	{
+		*head = tmp->next;
+		delete_all_chain(tmp);
+		tmp = *head;
+	}
+	while (tmp != NULL)
+	{
+		while (tmp != NULL && tmp->del != 1)
+		{
+			prev = tmp;
+			tmp = tmp->next;
+		}
+		if (tmp == NULL)
+			return ;
+		prev->next = tmp->next;
+		delete_all_chain(tmp);
+		tmp = prev->next;
+	}
+}

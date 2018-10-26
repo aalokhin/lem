@@ -63,10 +63,7 @@ void			mark_que(t_anthill **head, t_anthill *cur)
 	while (last)
 	{
 		if (not_taken(last) == 0)
-		{
-			if (last != tmp)
-				last->del = 1;
-		}
+			last->del = (last != tmp) ? 1 : last->del;
 		else if (not_taken(last) == 1)
 			mark_taken(last, 1);
 		last = last->next;
@@ -93,7 +90,8 @@ void			cycle_q(t_anthill **que)
 			links = links->next;
 			if (down->end == 1)
 				break ;
-			down->ngbr->visited++;
+			if (down->end != 1)
+				down->ngbr->visited++;
 		}
 		q = q->next;
 	}
@@ -107,9 +105,8 @@ t_anthill		*create_queue(t_anthill **room, t_input *input)
 	anthill_push_back(&que, create_head(find_start((*room), input)));
 	cycle_q(&que);
 	clean_q(find_end(*room, input), &que);
-	print_q(que);
+	count_dist(&que);
 	mark_que(&que, que);
 	delete_unneeded(&que);
-	print_q(que);
 	return (que);
 }

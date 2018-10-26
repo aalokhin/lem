@@ -23,7 +23,7 @@ int			is_valid_link(char *line, t_input *input, t_anthill **room)
 		return (1);
 	}
 	ft_clean_parse(parse);
-	input->error = 5;
+	input->error = (input->error == 0) ? 5 : input->error;
 	return (0);
 }
 
@@ -39,11 +39,11 @@ int			is_link(char *line, t_input *input)
 	if (i == 2)
 	{
 		if (input->start == -1 || input->end == -1)
-			input->error = 14;
+			input->error = (input->error == 0) ? 14 : input->error;
 		else if (input->start == 1)
-			input->error = 4;
+			input->error = (input->error == 0) ? 4 : input->error;
 		else if (count_symbols(line, '-') != 1)
-			input->error = 23;
+			input->error = (input->error == 0) ? 23 : input->error;
 		ft_clean_parse(parse);
 		return (1);
 	}

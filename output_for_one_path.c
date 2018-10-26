@@ -45,15 +45,21 @@ void			output_one_step(t_anthill *que, t_input *input)
 	int			id;
 	t_chain		*way;
 	t_anthill	*q;
+	int			flag;
 
 	id = 1;
 	q = que;
+	flag = 0;
 	way = que->chain->next;
 	while (way->ngbr->is_end != 1)
 		way = way->next;
 	while (id <= input->ant_nr)
 	{
-		ft_printf("L%d-%s\n", id, way->nombre);
+		ft_printf("L%d-%s", id, way->nombre);
+		flag = 1;
+		if (flag > 0)
+			ft_printf(" ");
 		id++;
 	}
+	ft_printf("\n");
 }

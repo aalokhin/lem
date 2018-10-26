@@ -78,9 +78,10 @@ void				print_ants(t_anthill *que)
 {
 	t_anthill		*q;
 	t_chain			*way;
+	int				flag;
 
+	flag = 0;
 	q = que;
-	way = q->chain->next;
 	while (q)
 	{
 		way = q->chain->next;
@@ -89,7 +90,12 @@ void				print_ants(t_anthill *que)
 		while (way->prev)
 		{
 			if (way->id != 0)
-				ft_printf("L%d-%s ", way->id, way->nombre);
+			{
+				if (flag > 0)
+					ft_printf(" ");
+				ft_printf("L%d-%s", way->id, way->nombre);
+				flag = 1;
+			}
 			way = way->prev;
 		}
 		q = q->next;

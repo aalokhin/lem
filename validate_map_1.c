@@ -34,13 +34,13 @@ void		validate_room(char *line, char **parse, t_input *input)
 {
 	if (is_all_digits(parse[1]) == 0 ||\
 	is_all_digits(parse[2]) == 0)
-		input->error = 1;
+		input->error = (input->error == 0) ? 1 : input->error;
 	else if (parse[0][0] == 'L')
-		input->error = 15;
+		input->error = (input->error == 0) ? 15 : input->error;
 	if (input->ant_nr == -1)
-		input->error = 3;
+		input->error = (input->error == 0) ? 3 : input->error;
 	if (count_symbols(line, ' ') != 2)
-		input->error = 22;
+		input->error = (input->error == 0) ? 22 : input->error;
 }
 
 int			is_room(char *line, t_input *input)
